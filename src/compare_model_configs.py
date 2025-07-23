@@ -74,10 +74,20 @@ for config in layer_configs:
         metrics={'box': 'mean_squared_error', 'label': 'accuracy'}
     )
     model.summary()
+    
+    # Early stopping om overfitting te voorkomen
+    early_stopping = tf.keras.callbacks.EarlyStopping(
+        monitor='val_loss',
+        patience=10,
+        restore_best_weights=True,
+        verbose=1
+    )
+    
     history = model.fit(
         X_train, {'box': Y_box_train, 'label': Y_label_train},
         validation_data=(X_test, {'box': Y_box_test, 'label': Y_label_test}),
-        epochs=EPOCHS, batch_size=BATCH_SIZE, verbose=2
+        epochs=EPOCHS, batch_size=BATCH_SIZE, verbose=2,
+        callbacks=[early_stopping]
     )
     loss, box_loss, label_loss, box_mse, label_acc = model.evaluate(
         X_test, {'box': Y_box_test, 'label': Y_label_test}, verbose=0

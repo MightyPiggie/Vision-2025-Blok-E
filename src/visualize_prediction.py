@@ -12,7 +12,7 @@ label2idx = get_label_mapping()
 idx2label = {v: k for k, v in label2idx.items()}
 
 # Laad model
-model = tf.keras.models.load_model('pet_detector_model.keras')
+model = tf.keras.models.load_model('models/pet_detector_model.keras')
 
 def parse_ground_truth(annot_path):
     try:

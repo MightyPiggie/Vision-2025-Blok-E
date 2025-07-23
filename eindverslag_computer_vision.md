@@ -86,6 +86,15 @@ Het model is gecompileerd met de Adam optimizer en een gecombineerde loss functi
 
 Tijdens het trainen is gebruik gemaakt van early stopping om overfitting te voorkomen. Het model is ingesteld op maximaal 50 epochs, maar stopt automatisch wanneer de validatie loss niet meer verbetert.
 
+### Evaluatie en Visualisatie
+
+Voor het monitoren van de training prestaties en het vergelijken van verschillende configuraties zijn verschillende visualisaties geïmplementeerd:
+
+- **Training curves:** Voor elke modelconfiguratie worden accuracy en loss curves gegenereerd die de training en validatie prestaties per epoch tonen.
+- **Vergelijkende analyse:** De validatie accuracy van verschillende modellen wordt in één grafiek weergegeven om directe vergelijking mogelijk te maken.
+- **Performance metrics:** Zowel classificatie accuracy als bounding box Mean Squared Error (MSE) worden geëvalueerd op de testset.
+- **Visuele inspectie:** Voorspelde bounding boxes en classificaties worden visueel vergeleken met ground truth annotaties.
+
 ## Gemaakte keuzes
 
 In dit hoofdstuk worden de gemaakte keuzes bij het uitvoeren van de opdracht besproken. Het gaat hierbij voornamelijk om de keuzes gemaakt tijdens het ontwikkelen van het model.
@@ -148,14 +157,40 @@ De training van de verschillende modellen toonde de volgende patronen:
 - **Stabiliteit:** Models met BatchNormalization toonden stabielere training curves
 - **Overfitting:** Dropout hielp bij het verminderen van overfitting bij de grotere modellen
 
+#### Accuracy Curves per Afbeeldingsgrootte
+
+De training curves voor verschillende input resoluties tonen duidelijke verschillen in prestaties:
+
+![Accuracy Curve 64x64](accuracy_curve_64.png)
+*Figuur 1: Training en validatie accuracy voor 64x64 pixels input resolutie*
+
+![Accuracy Curve 128x128](accuracy_curve_128.png)
+*Figuur 2: Training en validatie accuracy voor 128x128 pixels input resolutie*
+
+![Accuracy Curve 224x224](accuracy_curve_224.png)
+*Figuur 3: Training en validatie accuracy voor 224x224 pixels input resolutie*
+
+#### Vergelijking Model Configuraties
+
+De verschillende architecturen en activatiefuncties zijn vergeleken om hun relatieve prestaties te evalueren:
+
+![Model Vergelijking](compare_model_accuracies-differant-sizes-and-activation.png)
+*Figuur 4: Vergelijking van validatie accuracy tussen verschillende model configuraties met variërende activatiefuncties en architecturen*
+
+Uit de curves blijkt dat:
+- **Hogere resolutie** leidt tot consistent betere prestaties en hogere eindaccuracy
+- **Early stopping** effectief werkt om overfitting te voorkomen
+- **Verschillende activatiefuncties** vergelijkbare convergentiepatronen tonen
+- **Complexere modellen** iets betere eindprestaties behalen maar langer nodig hebben om te convergeren
+
 ### Prestatiemetrieken
 
 Op basis van de beschikbare getrainde modellen en accuracy curves:
 
 **Classificatie Accuracy:**
-- 64x64 input: ~60-65% test accuracy
-- 128x128 input: ~70-75% test accuracy  
-- 224x224 input: ~75-80% test accuracy
+- 64x64 input: ~80% test accuracy
+- 128x128 input: ~80% test accuracy  
+- 224x224 input: ~80% test accuracy
 
 **Bounding Box Performance:**
 - Alle modellen toonden verbeterde lokalisatie met hogere input resolutie
@@ -172,7 +207,7 @@ Uit de experimenten bleek dat:
 
 ## Analyse en discussie
 
-De resultaten uit het vorige hoofdstuk laten zien dat het multi-task learning model redelijke prestaties behaalt op beide taken. De accuracy van 75-80% op de hoogste resolutie is acceptabel voor een relatief eenvoudig model op een complexe dataset met 37 klassen.
+De resultaten uit het vorige hoofdstuk laten zien dat het multi-task learning model redelijke prestaties behaalt op beide taken. De accuracy van 80% op alle resolutie is acceptabel voor een relatief eenvoudig model op een complexe dataset met 37 klassen. Ook maakt het formaat voor de accuracy niet uit. Wel voor de performance.
 
 ### Mogelijke oorzaken voor beperkingen:
 
@@ -186,7 +221,7 @@ De resultaten uit het vorige hoofdstuk laten zien dat het multi-task learning mo
 
 ### Opmerkelijke bevindingen:
 
-- **Resolutie impact:** De duidelijke verbetering bij hogere resoluties suggereert dat fijne details belangrijk zijn voor zowel ras herkenning als nauwkeurige lokalisatie.
+- **Resolutie impact:** De resolutie had geen duidelijk impact op de accuracy van de modellen. Dit zou je wel verwachten.
 
 - **Training efficiency:** Early stopping was effectief en voorkwam overmatige training.
 
@@ -204,7 +239,6 @@ De resultaten uit het vorige hoofdstuk laten zien dat het multi-task learning mo
 In dit project is een multi-task CNN-model ontwikkeld en getraind voor de gelijktijdige classificatie en lokalisatie van huisdieren in de Oxford-IIIT Pet dataset. De resultaten tonen aan dat het model redelijke prestaties behaalt met een classificatie accuracy van 75-80% en acceptabele bounding box voorspellingen op de hoogste geteste resolutie.
 
 **Belangrijkste bevindingen:**
-- Hogere input resoluties leiden tot significant betere prestaties
 - Multi-task learning is een effectieve aanpak voor deze toepassing  
 - Regularisatietechnieken zoals BatchNormalization en Dropout zijn waardevol
 - Het model vormt een solide basis voor verdere ontwikkeling

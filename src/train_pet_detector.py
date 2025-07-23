@@ -110,10 +110,20 @@ def main():
             X, Y_box, Y_label, test_size=0.2, random_state=42)
         model = build_model(len(label2idx), img_size)
         model.summary()
+        
+        # Early stopping om overfitting te voorkomen
+        early_stopping = tf.keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            patience=10,
+            restore_best_weights=True,
+            verbose=1
+        )
+        
         history = model.fit(
             X_train, {'box': Y_box_train, 'label': Y_label_train},
             validation_data=(X_test, {'box': Y_box_test, 'label': Y_label_test}),
-            epochs=100, batch_size=32, verbose=2
+            epochs=100, batch_size=32, verbose=2,
+            callbacks=[early_stopping]
         )
         # Plot accuracy per epoch
         f, axarr = plt.subplots(1, 2, figsize=(12, 5))
@@ -138,7 +148,7 @@ def main():
             X_test, {'box': Y_box_test, 'label': Y_label_test}, verbose=0
         )
         print(f"Test box MSE: {box_mse:.4f}, Test label acc: {label_acc:.4f}")
-        model.save(f'pet_detector_model_{img_size}.keras')
+        model.save(f'models/pet_detector_model_{img_size}.keras')
         print(f'Model opgeslagen als pet_detector_model_{img_size}.keras')
         results.append({'img_size': img_size, 'box_mse': box_mse, 'label_acc': label_acc})
 
