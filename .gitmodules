@@ -1,0 +1,3 @@
+[submodule "dataset-iiit-pet"]
+	path = dataset-iiit-pet
+	url = git@github.com:ml4py/dataset-iiit-pet.git
