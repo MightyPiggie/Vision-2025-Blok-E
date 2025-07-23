@@ -1,0 +1,7 @@
+tensorflow>=2.10
+opencv-python
+matplotlib
+numpy
+pycocotools
+scikit-learn
+kagglehub
