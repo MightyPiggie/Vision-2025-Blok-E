@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ET
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
-# Zet hier het pad naar de root van de Oxford-IIIT Pet dataset
 DATASET_PATH = os.path.join(os.path.dirname(__file__), '..', 'dataset-iiit-pet')
 IMAGES_PATH = os.path.join(DATASET_PATH, 'images')
 ANNOTATIONS_PATH = os.path.join(DATASET_PATH, 'annotations/xmls')
@@ -15,6 +14,7 @@ IMG_SIZE = 256  # Klein houden voor snelheid
 
 
 def get_label_mapping():
+    """Laad label mapping van de dataset."""
     all_labels = set()
     for fname in os.listdir(ANNOTATIONS_PATH):
         if not fname.endswith('.xml'):
@@ -29,6 +29,7 @@ def get_label_mapping():
     return {label: i for i, label in enumerate(sorted(all_labels))}
 
 def load_data(label2idx, img_size=128):
+    """Laad afbeeldingen en bounding boxes uit de dataset."""
     X, Y_box, Y_label = [], [], []
     for fname in os.listdir(IMAGES_PATH):
         if not fname.endswith('.jpg'):
@@ -79,6 +80,8 @@ def load_data(label2idx, img_size=128):
     return X, Y_box, Y_label
 
 def build_model(num_classes, img_size=128):
+    """Bouw een eenvoudig CNN model voor object detectie."""
+
     inputs = tf.keras.Input(shape=(img_size, img_size, 3))
     x = tf.keras.layers.Conv2D(32, 3, activation='relu')(inputs)
     x = tf.keras.layers.MaxPooling2D()(x)

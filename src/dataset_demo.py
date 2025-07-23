@@ -1,6 +1,3 @@
-
-# Oxford-IIIT Pet Dataset Object Detection Example
-
 import os
 import numpy as np
 import cv2
@@ -11,7 +8,6 @@ except ImportError:
     Rectangle = None
 import xml.etree.ElementTree as ET
 
-# Zet hier het pad naar de root van de Oxford-IIIT Pet dataset
 DATASET_PATH = os.path.join(os.path.dirname(__file__), '..', 'dataset-iiit-pet')
 IMAGES_PATH = os.path.join(DATASET_PATH, 'images')
 ANNOTATIONS_PATH = os.path.join(DATASET_PATH, 'annotations/xmls')
@@ -57,6 +53,7 @@ def get_image_and_box(filename):
         return None, None, None
 
 def plot_image_with_box(img, box, label):
+    """ Plot de afbeelding met de bounding box en label."""
     plt.figure(figsize=(8, 6))
     plt.imshow(img)
     x1, y1, x2, y2 = box
@@ -81,5 +78,3 @@ if __name__ == '__main__':
         if img is not None and box is not None and label is not None:
             plot_image_with_box(img, box, label)
             break
-
-# Dit script laadt en visualiseert een afbeelding met bounding box uit de Oxford-IIIT Pet dataset.

@@ -6,15 +6,14 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import xml.etree.ElementTree as ET
 
-# Laad label mapping
 from train_pet_detector import get_label_mapping, IMG_SIZE, DATASET_PATH, IMAGES_PATH, ANNOTATIONS_PATH
 label2idx = get_label_mapping()
 idx2label = {v: k for k, v in label2idx.items()}
 
-# Laad model
 model = tf.keras.models.load_model('models/pet_detector_model.keras')
 
 def parse_ground_truth(annot_path):
+    """Parse de ground truth bounding box en label uit de annotatie XML."""
     try:
         tree = ET.parse(annot_path)
         root = tree.getroot()
